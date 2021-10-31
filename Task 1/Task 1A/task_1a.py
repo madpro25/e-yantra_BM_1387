@@ -75,13 +75,19 @@ def detect_shapes(img):
         if M['m00']!=0.0:
             x=int(M['m10']/M['m00'])            #coords of centroid
             y=int(M['m01']/M['m00'])
-
+        if len(approx)==3:
+            cv2.putText(img,"triangle",(x,y),cv2.FONT_HERSHEY_SIMPLEX,0.7,0,2)#print("triangle")
         if len(approx)==4:
             ((a,b),(w,h),(r))=cv2.minAreaRect(approx)
             print(cv2.boxPoints(((a,b),(w,h),(r))))         #prints vertices
             if (float(w)/h)==1:
                 cv2.putText(img,"square",(x,y),cv2.FONT_HERSHEY_SIMPLEX,0.7,0,2)#print("square")
             else: cv2.putText(img,"rectangle",(x,y),cv2.FONT_HERSHEY_SIMPLEX,0.7,0,2)#print("rectangle")
+        if len(approx)==5:
+            cv2.putText(img,"pentagon",(x,y),cv2.FONT_HERSHEY_SIMPLEX,0.7,0,2)#print("pentagon")
+        if len(approx)>7:
+            cv2.putText(img,"circle",(x,y),cv2.FONT_HERSHEY_SIMPLEX,0.7,0,2)#print("circle")
+        
 
         #len(approx) gives number of sides
 
