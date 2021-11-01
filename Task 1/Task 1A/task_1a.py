@@ -61,13 +61,13 @@ def detect_shapes(img):
     """
     detected_shapes = []
 
+
     ##############	ADD YOUR CODE HERE	##############
+    name,coords,col="",(0,0),"red"
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     _, thresh = cv2.threshold(gray, 170, 255, cv2.THRESH_BINARY)
     contours, _ = cv2.findContours(
         thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-    cv2.imshow("test",thresh)
-    cv2.waitKey(0)
 
     for contour in contours[1:]:
         approx=cv2.approxPolyDP(contour,0.02*cv2.arcLength(contour,True),True)
@@ -75,21 +75,33 @@ def detect_shapes(img):
         if M['m00']!=0.0:
             x=int(M['m10']/M['m00'])            #coords of centroid
             y=int(M['m01']/M['m00'])
+            coords=(x,y)
         if len(approx)==3:
-            cv2.putText(img,"triangle",(x,y),cv2.FONT_HERSHEY_SIMPLEX,0.7,0,2)#print("triangle")
+            name="triangle"
+
         if len(approx)==4:
             ((a,b),(w,h),(r))=cv2.minAreaRect(approx)
-            print(cv2.boxPoints(((a,b),(w,h),(r))))         #prints vertices
             if (float(w)/h)==1:
-                cv2.putText(img,"square",(x,y),cv2.FONT_HERSHEY_SIMPLEX,0.7,0,2)#print("square")
-            else: cv2.putText(img,"rectangle",(x,y),cv2.FONT_HERSHEY_SIMPLEX,0.7,0,2)#print("rectangle")
+                name="square"
+            else:
+                name="rectangle"
         if len(approx)==5:
-            cv2.putText(img,"pentagon",(x,y),cv2.FONT_HERSHEY_SIMPLEX,0.7,0,2)#print("pentagon")
+            name="pentagon"
         if len(approx)>7:
-            cv2.putText(img,"circle",(x,y),cv2.FONT_HERSHEY_SIMPLEX,0.7,0,2)#print("circle")
-        
+            name="circle"
 
-        #len(approx) gives number of sides
+        (b,g,r)=img[y,x]
+        if (b,g,r)==(255,0,0):
+            col="blue"
+        if (b,g,r)==(0,255,0):
+            col="green"
+        if (b,g,r)==(0,0,255):
+            col="red"
+        if (b,g,r)==(0,140,255) or (b,g,r)==(0,150,255):
+            col="orange"
+        print(b,g,r)
+        detected_shapes+=[[col,name,coords]]
+
 
     ##################################################
 
