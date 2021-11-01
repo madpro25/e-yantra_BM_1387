@@ -76,32 +76,37 @@ def detect_shapes(img):
             x=int(M['m10']/M['m00'])            #coords of centroid
             y=int(M['m01']/M['m00'])
             coords=(x,y)
-            print(approx)
+
 
         if len(approx)==3:
-            name="triangle"
+            name="Triangle"
 
         if len(approx)==4:
             ((a,b),(w,h),(r))=cv2.minAreaRect(approx)
             if (float(w)/h)==1:
-                name="square"
+                name="Square"
             else:
-                name="rectangle"
+                name="Rectangle"
+
         if len(approx)==5:
-            name="pentagon"
+            name="Pentagon"
+
         if len(approx)>7:
-            name="circle"
+            name="Circle"
 
         (b,g,r)=img[y,x]
         if (b,g,r)==(255,0,0):
-            col="blue"
+            col="Blue"
+
         if (b,g,r)==(0,255,0):
-            col="green"
+            col="Green"
+
         if (b,g,r)==(0,0,255):
-            col="red"
+            col="Red"
+
         if (b,g,r)==(0,140,255) or (b,g,r)==(0,150,255):
-            col="orange"
-        print(b,g,r)
+            col="Orange"
+
         detected_shapes+=[[col,name,coords]]
 
 
