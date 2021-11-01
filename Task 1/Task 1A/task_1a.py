@@ -63,7 +63,7 @@ def detect_shapes(img):
 
 
     ##############	ADD YOUR CODE HERE	##############
-    name,coords,col="",(0,0),"red"
+    name,coords,col="",(0,0),""
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     _, thresh = cv2.threshold(gray, 170, 255, cv2.THRESH_BINARY)
     contours, _ = cv2.findContours(
@@ -76,6 +76,8 @@ def detect_shapes(img):
             x=int(M['m10']/M['m00'])            #coords of centroid
             y=int(M['m01']/M['m00'])
             coords=(x,y)
+            print(approx)
+
         if len(approx)==3:
             name="triangle"
 
