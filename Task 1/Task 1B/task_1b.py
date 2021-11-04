@@ -63,7 +63,7 @@ except Exception:
 def init_remote_api_server():
     client_id = -1
     sim.simxFinish(-1)
-    client_id = sim.simxStart('127.0.0.1', 19999, True, True, 5000, 5)
+    client_id = sim.simxStart('127.0.0.1', 19997, True, True, 5000, 5)
 
     return client_id
 
@@ -91,9 +91,11 @@ def start_simulation(client_id):
     return_code = start_simulation(client_id)
 
     """
+    
     return_code = -2
 
     ##############	ADD YOUR CODE HERE	##############
+    return_code = sim.simxStartSimulation(client_id,sim.simx_opmode_oneshot)
 
     ##################################################
 
@@ -130,7 +132,8 @@ def get_vision_sensor_image(client_id):
     return_code = 0
 
     ##############	ADD YOUR CODE HERE	##############
-
+    res,v0=sim.simxGetObjectHandle(client_id,'Vision_sensor',sim.simx_opmode_oneshot_wait)
+    return_code,image_resolution,vision_sensor_image=sim.simxGetVisionSensorImage(client_id,v0,0,sim.simx_opmode_oneshot_wait)
     ##################################################
 
     return vision_sensor_image, image_resolution, return_code
