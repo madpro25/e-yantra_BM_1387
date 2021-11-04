@@ -172,7 +172,8 @@ def transform_vision_sensor_image(vision_sensor_image, image_resolution):
     transformed_image = None
 
     ##############	ADD YOUR CODE HERE	##############
-
+    image=np.array(vision_sensor_image)
+    transformed_image=image
     ##################################################
 
     return transformed_image
@@ -204,7 +205,7 @@ def stop_simulation(client_id):
     return_code = -2
 
     ##############	ADD YOUR CODE HERE	##############
-
+    sim.simxStopSimulation(client_id)
     ##################################################
 
     return return_code
@@ -233,7 +234,7 @@ def exit_remote_api_server(client_id):
     """
 
     ##############	ADD YOUR CODE HERE	##############
-
+    sim.simxFinish(client_id)
     ##################################################
 
 
