@@ -172,8 +172,10 @@ def transform_vision_sensor_image(vision_sensor_image, image_resolution):
     transformed_image = None
 
     ##############	ADD YOUR CODE HERE	##############
-    image=np.array(vision_sensor_image)
-    transformed_image=image
+    image=np.array(np.uint8(vision_sensor_image))
+    #print(image.reshape((image_resolution[1],-1)).shape)
+    #print(min(image))
+    transformed_image=np.reshape(image,[image_resolution[0],image_resolution[1],3])
     ##################################################
 
     return transformed_image
@@ -205,7 +207,7 @@ def stop_simulation(client_id):
     return_code = -2
 
     ##############	ADD YOUR CODE HERE	##############
-    sim.simxStopSimulation(client_id)
+    return_code=sim.simxStopSimulation(client_id,sim.simx_opmode_oneshot)
     ##################################################
 
     return return_code
