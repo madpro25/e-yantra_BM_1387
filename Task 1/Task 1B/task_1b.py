@@ -266,6 +266,12 @@ def detect_qr_codes(transformed_image):
 
     qr_codes = []
 
+    barcodes=decode(transformed_image)
+    for bar in barcodes:
+        (x,y,w,h)=bar.rect
+        data=bar.data.decode("utf-8")
+        qr_codes.append([data,(x+w/2,y+h/2)])
+
     return qr_codes
 
 
