@@ -90,10 +90,12 @@ def read_distance_sensor(client_id, sensor_handle):
 	detected = False
 
 	##############	ADD YOUR CODE HERE	##############
+	res,detected,point,objhandle,norm=sim.simxReadProximitySensor(client_id,sensor_handle,sim.simx_opmode_streaming)
 
-
-
-
+	if detected:
+		distance=math.sqrt(sum([i*i for i in point]))
+	
+	print(detected,distance)
 	##################################################
 	return detected, distance
 
@@ -121,6 +123,10 @@ def control_logic(client_id):
 	"""
 
 	##############  ADD YOUR CODE HERE  ##############
+	res,d1=sim.simxGetObjectHandle(client_id,'distance_sensor_1',sim.simx_opmode_streaming)
+	res,d2=sim.simxGetObjectHandle(client_id,'distance_sensor_2',sim.simx_opmode_streaming)
+	det1,dis1=read_distance_sensor(client_id,d1)
+	dit2,dis2=read_distance_sensor(client_id,d2)
 
 
 
