@@ -16,8 +16,8 @@
 *****************************************************************************************
 '''
 
-# Team ID:			[ Team-ID ]
-# Author List:		[ Names of team members worked on this file separated by Comma: Name1, Name2, ... ]
+# Team ID:			1387 
+# Author List:		Aaditya Pramod, Ayush Gupta, Muntaba Khan, Pranjal
 # Filename:			task_1c.py
 # Functions:		read_distance_sensor, control_logic
 # 					[ Comma separated list of functions in this file ]
@@ -125,6 +125,7 @@ def control_logic(client_id):
 	control_logic(client_id)
 	"""
 
+<<<<<<< HEAD
     ##############  ADD YOUR CODE HERE  ##############
     global i
     res, d1 = sim.simxGetObjectHandle(client_id, 'distance_sensor_1',
@@ -222,6 +223,17 @@ def control_logic(client_id):
     ##################################################
 
     ## You are NOT allowed to make any changes in the code below ##
+=======
+	##############  ADD YOUR CODE HERE  ##############
+	res,d1=sim.simxGetObjectHandle(client_id,'distance_sensor_1',sim.simx_opmode_streaming)		# gets the object handle for distance_sensors as d1 and d2 
+	res,d2=sim.simxGetObjectHandle(client_id,'distance_sensor_2',sim.simx_opmode_streaming)		# respectively
+	
+	det1,dis1=read_distance_sensor(client_id,d1)							# this returns det as a boolean if a surface is detected 
+	dit2,dis2=read_distance_sensor(client_id,d2)							# and the distance if detected else distance = -1
+
+
+
+>>>>>>> d3e605bc37e3536fdf0b15544e3aadd20feefb4f
 
 
 if __name__ == "__main__":
