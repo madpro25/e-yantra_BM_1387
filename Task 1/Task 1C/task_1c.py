@@ -141,6 +141,8 @@ def control_logic(client_id):
     while (not (det1 and dis1<0.12)):
         res, d1 = sim.simxGetObjectHandle(client_id, 'distance_sensor_1',
                                           sim.simx_opmode_streaming)
+	res, d2 = sim.simxGetObjectHandle(client_id, 'distance_sensor_2',
+                                      sim.simx_opmode_streaming)
         det1, dis1 = read_distance_sensor(client_id, d1)
         #print(dis1,"d1")
         det2, dis2 = read_distance_sensor(client_id, d2)
