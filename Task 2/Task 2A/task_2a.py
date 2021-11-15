@@ -100,7 +100,7 @@ def get_vision_sensor_image(client_id, vision_sensor_handle):
 	return_code = 0
 
 	##############	ADD YOUR CODE HERE	##############
-
+	return_code,image_resolution,vision_sensor_image=sim.simxGetVisionSensorImage(client_id,vision_sensor_handle,0,sim.simx_opmode_blocking)
 
 	##################################################
 
@@ -139,8 +139,10 @@ def get_vision_sensor_depth_image(client_id, vision_sensor_handle):
 	return_code = 0
 
 	##############	ADD YOUR CODE HERE	##############
+	#return_code,image_resolution,vision_sensor_depth_image=sim.simxGetVisionSensorDepthBuffer(client_id,vision_sensor_handle,sim.simx_opmode_streaming)
+	return_code,image_resolution,vision_sensor_depth_image=sim.simxGetVisionSensorDepthBuffer(client_id,vision_sensor_handle,sim.simx_opmode_blocking)
 
-
+	print(return_code,len(image_resolution),len(vision_sensor_depth_image))
 	##################################################
 
 	return vision_sensor_depth_image, image_resolution, return_code
@@ -179,6 +181,9 @@ def transform_vision_sensor_depth_image(vision_sensor_depth_image, image_resolut
 	transformed_depth_image = None
 
 	##############	ADD YOUR CODE HERE	##############
+	image=np.array(np.float32(vision_sensor_depth_image))
+	transformed_depth_image=np.reshape(image,[image_resolution[0],image_resolution[1]])
+	transformed_depth_image=cv2.flip(transformed_depth_image,0)
 
 
 	##################################################
