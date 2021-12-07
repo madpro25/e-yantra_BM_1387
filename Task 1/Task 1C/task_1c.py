@@ -16,7 +16,7 @@
 *****************************************************************************************
 '''
 
-# Team ID:			1387 
+# Team ID:			1387
 # Author List:		Aaditya Pramod, Ayush Gupta, Muntaba Khan, Pranjal
 # Filename:			task_1c.py
 # Functions:		read_distance_sensor, control_logic
@@ -60,7 +60,8 @@ except Exception as e:
 
 ##############################################################
 
-i=0
+i = 0
+
 
 def read_distance_sensor(client_id, sensor_handle):
     """
@@ -98,7 +99,7 @@ def read_distance_sensor(client_id, sensor_handle):
     if detected:
         distance = math.sqrt(sum([i * i for i in point]))
 
-    print(detected, distance)
+    #print(detected, distance)
     ##################################################
     return detected, distance
 
@@ -125,7 +126,6 @@ def control_logic(client_id):
 	control_logic(client_id)
 	"""
 
-
     ##############  ADD YOUR CODE HERE  ##############
     global i
     res, d1 = sim.simxGetObjectHandle(client_id, 'distance_sensor_1',
@@ -137,28 +137,37 @@ def control_logic(client_id):
     res, jr = sim.simxGetObjectHandle(client_id, 'right_joint',
                                       sim.simx_opmode_oneshot)
     det1, dis1 = read_distance_sensor(client_id, d1)
-    det2,dis2=read_distance_sensor(client_id,d2)
-    while (not (det1 and dis1<0.12)):
+    det2, dis2 = read_distance_sensor(client_id, d2)
+    while (not (det1 and dis1 < 0.124)):
         res, d1 = sim.simxGetObjectHandle(client_id, 'distance_sensor_1',
                                           sim.simx_opmode_streaming)
-	res, d2 = sim.simxGetObjectHandle(client_id, 'distance_sensor_2',
-                                      sim.simx_opmode_streaming)
+        res, d2 = sim.simxGetObjectHandle(client_id, 'distance_sensor_2',
+                                          sim.simx_opmode_streaming)
         det1, dis1 = read_distance_sensor(client_id, d1)
         #print(dis1,"d1")
         det2, dis2 = read_distance_sensor(client_id, d2)
         #print(dis2,"d2")
-        if dis2<0.13 and dis2>0.12:
+        if dis2 < 0.127 and dis2 > 0.124:
             sim.simxSetJointTargetVelocity(client_id, jl, 1,
                                            sim.simx_opmode_oneshot)
             sim.simxSetJointTargetVelocity(client_id, jr, 1,
                                            sim.simx_opmode_oneshot)
-        if dis2>0.13:
-            sim.simxSetJointTargetVelocity(client_id,jl,0.5,sim.simx_opmode_oneshot)
-            sim.simxSetJointTargetVelocity(client_id,jr,-0.5,sim.simx_opmode_oneshot)
-        
-        if dis2<0.12:
-            sim.simxSetJointTargetVelocity(client_id,jl,-1,sim.simx_opmode_oneshot)
-            sim.simxSetJointTargetVelocity(client_id,jr,1,sim.simx_opmode_oneshot)
+            #print("straight")
+        if dis2 > 0.127:
+            sim.simxSetJointTargetVelocity(client_id, jl, 1,
+                                           sim.simx_opmode_oneshot)
+            sim.simxSetJointTargetVelocity(client_id, jr, -1,
+                                           sim.simx_opmode_oneshot)
+            #print("out")
+
+        if dis2 < 0.124:
+            sim.simxSetJointTargetVelocity(client_id, jl, -1,
+                                           sim.simx_opmode_oneshot)
+            sim.simxSetJointTargetVelocity(client_id, jr, 1,
+                                           sim.simx_opmode_oneshot)
+            #print("in")
+        sim.simxSetJointTargetVelocity(client_id, jl, 1, sim.simx_opmode_oneshot)
+        sim.simxSetJointTargetVelocity(client_id, jr, 1, sim.simx_opmode_oneshot)
 
 
     sim.simxSetJointTargetVelocity(client_id, jl, 0, sim.simx_opmode_oneshot)
@@ -179,9 +188,9 @@ def control_logic(client_id):
         det1, dis1 = read_distance_sensor(client_id, d1)
         det2, dis2 = read_distance_sensor(client_id, d2)
 
-        sim.simxSetJointTargetVelocity(client_id, jl, -8,
+        sim.simxSetJointTargetVelocity(client_id, jl, -4,
                                        sim.simx_opmode_oneshot)
-        sim.simxSetJointTargetVelocity(client_id, jr, 8,
+        sim.simxSetJointTargetVelocity(client_id, jr, 4,
                                        sim.simx_opmode_oneshot)
 
     # while (1):#not (dis2 > 0.12 and dis2 < 0.13)):
@@ -208,23 +217,30 @@ def control_logic(client_id):
     #sim.simxSetJointTargetVelocity(client_id, jr, 1, sim.simx_opmode_oneshot)
     #print(i)
     #if i<20:
-    while(dis2>0.13 or dis2<0.12):
+    while (dis2 > 0.13 or dis2 < 0.12):
         det2, dis2 = read_distance_sensor(client_id, d2)
-        if dis2>0.13:
-            sim.simxSetJointTargetVelocity(client_id,jl,1,sim.simx_opmode_oneshot)
-            sim.simxSetJointTargetVelocity(client_id,jr,-1,sim.simx_opmode_oneshot)
-        
-        if dis2<0.12:
-            sim.simxSetJointTargetVelocity(client_id,jl,-1,sim.simx_opmode_oneshot)
-            sim.simxSetJointTargetVelocity(client_id,jr,1,sim.simx_opmode_oneshot)
+        if dis2 > 0.13:
+            sim.simxSetJointTargetVelocity(client_id, jl, 1,
+                                           sim.simx_opmode_oneshot)
+            sim.simxSetJointTargetVelocity(client_id, jr, -1,
+                                           sim.simx_opmode_oneshot)
+
+        if dis2 < 0.12:
+            sim.simxSetJointTargetVelocity(client_id, jl, -1,
+                                           sim.simx_opmode_oneshot)
+            sim.simxSetJointTargetVelocity(client_id, jr, 1,
+                                           sim.simx_opmode_oneshot)
 
     sim.simxSetJointTargetVelocity(client_id, jl, 1, sim.simx_opmode_oneshot)
     sim.simxSetJointTargetVelocity(client_id, jr, 1, sim.simx_opmode_oneshot)
-    control_logic(client_id)
+    i+=1
+    if i<5:
+        control_logic(client_id)
 
     ##################################################
 
     ## You are NOT allowed to make any changes in the code below ##
+
 
 if __name__ == "__main__":
 

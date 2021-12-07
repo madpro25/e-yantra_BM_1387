@@ -16,8 +16,8 @@
 *****************************************************************************************
 '''
 
-# Team ID:			[ Team-ID ]
-# Author List:		[ Names of team members worked on this file separated by Comma: Name1, Name2, ... ]
+# Team ID:			[ BM-1387 ]
+# Author List:		[ Aaditya Pramod, Ayush Gupta, Muntaba Khan, Pranjal ]
 # Filename:			task_2a.py
 # Functions:
 # Global variables:
@@ -139,10 +139,9 @@ def get_vision_sensor_depth_image(client_id, vision_sensor_handle):
 	return_code = 0
 
 	##############	ADD YOUR CODE HERE	##############
-	#return_code,image_resolution,vision_sensor_depth_image=sim.simxGetVisionSensorDepthBuffer(client_id,vision_sensor_handle,sim.simx_opmode_streaming)
 	return_code,image_resolution,vision_sensor_depth_image=sim.simxGetVisionSensorDepthBuffer(client_id,vision_sensor_handle,sim.simx_opmode_blocking)
 
-	print(return_code,len(image_resolution),len(vision_sensor_depth_image))
+	
 	##################################################
 
 	return vision_sensor_depth_image, image_resolution, return_code
@@ -183,7 +182,7 @@ def transform_vision_sensor_depth_image(vision_sensor_depth_image, image_resolut
 	##############	ADD YOUR CODE HERE	##############
 	image=np.array(np.float32(vision_sensor_depth_image))
 	transformed_depth_image=np.reshape(image,[image_resolution[0],image_resolution[1]])
-	transformed_depth_image=cv2.flip(transformed_depth_image,0)
+	transformed_depth_image=cv2.flip(transformed_depth_image,1)
 
 
 	##################################################
@@ -214,12 +213,38 @@ def detect_berries(transformed_image, transformed_depth_image):
 	berries_dictionary = detect_berries(transformed_image, transformed_depth_image)
 
 	"""
-	berries_dictionary = {}
+	berries_dictionary = {'Strawberry':[],'Blueberry':[],'Lemon':[]}
 	berries = ["Strawberry", "Blueberry", "Lemon"]
 
 	##############	ADD YOUR CODE HERE	##############
+	name,coords,col="",(0,0,0),""
+	gray = cv2.cvtColor(transformed_image, cv2.COLOR_BGR2GRAY)
+	_, thresh = cv2.threshold(gray, 40, 255, cv2.THRESH_BINARY)
+	contours, _ = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
+	for contour in contours:
+		approx=cv2.approxPolyDP(contour,0.02*cv2.arcLength(contour,True),True)
+		M=cv2.moments(contour)
+		if M['m00']!=0.0:
+			x=int(M['m10']/M['m00'])            #coords of centroid
+			y=int(M['m01']/M['m00'])
+		
+		depth=transformed_depth_image[y,x]
+		z=depth
+		coords=(float(x-256)/512,float(y-256)/512,z)
+		(b,g,r)=transformed_image[y,x]
+		if b<=255 and b>=150 and g<=100 and g>=40 and r<=50 and r>=0:
+			berry=berries[1]
+		
+		if b<=130 and b>=50 and g<=50 and g>=0 and r<=255 and r>=200:
+			berry=berries[0]
 
+		if b<=35 and b>=0 and g<=255 and g>=188 and r<=255 and r>=200:
+			berry=berries[2]
+
+		berries_dictionary[berry].append((x,y,z))
+	
+	
 
 	##################################################
 	return berries_dictionary
@@ -246,11 +271,18 @@ def detect_berry_positions(berries_dictionary):
 	berry_positions_dictionary = detect_berry_positions(berries_dictionary)
 
 	"""
-	berry_positions_dictionary = {}
+	berry_positions_dictionary = {"Strawberry":[], "Blueberry":[], "Lemon":[]}
 	berries = ["Strawberry", "Blueberry", "Lemon"]
 
 	##############	ADD YOUR CODE HERE	##############
-
+	for i in berries:
+		l=berries_dictionary[i]
+		for j in l:
+			x,y,z=j
+			x=1.93/1000*x-0.4964
+			y=1.93/1000*y-0.4964
+			dis=2.007*z+0.0255
+			berry_positions_dictionary[i].append((x,y,dis))
 
 
 	##################################################

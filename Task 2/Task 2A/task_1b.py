@@ -176,7 +176,7 @@ def transform_vision_sensor_image(vision_sensor_image, image_resolution):
     #print(image.reshape((image_resolution[1],-1)).shape)
     #print(min(image))
     transformed_image=np.reshape(image,[image_resolution[0],image_resolution[1],3])
-    transformed_image=cv2.flip(transformed_image,0)
+    transformed_image=cv2.flip(transformed_image,1)
     transformed_image=cv2.cvtColor(transformed_image,cv2.COLOR_BGR2RGB)
     ##################################################
 
